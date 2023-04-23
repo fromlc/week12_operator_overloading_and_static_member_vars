@@ -7,6 +7,7 @@
 
 #include <iostream>
 
+// comment this #define to disable debug messages
 //#define LC_DEBUG
 
 //------------------------------------------------------------------------------
@@ -50,8 +51,13 @@ private:
 public:
     // constructors
     Fruit(int _fruitID, string _color) {
+
+        // assign unique instance ID and count instances
         instanceID = ++instanceCount;
+
+        // identifies type used for instantiation
         fruitID = _fruitID;
+
         calories = 0;
         color = _color;
     }
