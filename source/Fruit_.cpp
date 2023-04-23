@@ -21,7 +21,8 @@ int Fruit::s_instanceCount = 0;
 //------------------------------------------------------------------------------
 ostream& operator<<(ostream& os, const Fruit& f) {
 
-    // "local static" means a value will persist across function calls 
+    // "local static" means a value will persist across function calls
+    // this works well here since we only need to initialize this array once
     static const string fruitNames[] = { "Fruit ", "Banana ", "Orange " };
 
     os << "Calories for " << fruitNames[f.fruitID] << f.calories;
