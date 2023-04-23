@@ -76,9 +76,12 @@ public:
     // setter
     void setCalories(int _calories) { calories = _calories; }
 
-    // f1 + f2
-    // 
+    //--------------------------------------------------------------------------
     // overload + operator to add calories of two Fruit instances
+    // 
+    // Fruit f1, f2;
+    // in expression f1 + f2, f1 is "this" and f2 is "rhs"
+    //--------------------------------------------------------------------------
     int operator+(Fruit& rhs) {
         return this->calories + rhs.calories;
     }
