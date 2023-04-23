@@ -73,7 +73,6 @@ public:
     // access static member variable
     static int getInstanceCount() { return instanceCount; }
 
-
     // setter
     void setCalories(int _calories) { calories = _calories; }
 
