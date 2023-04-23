@@ -4,15 +4,18 @@
 //      - derived classes Orange, Banana
 //------------------------------------------------------------------------------
 #pragma once
-//#define LC_DEBUG
 
 #include <iostream>
-#include <string>
+
+//#define LC_DEBUG
 
 //------------------------------------------------------------------------------
 // using symbols
 //------------------------------------------------------------------------------
+#ifdef LC_DEBUG
 using std::cout;
+#endif
+
 using std::ostream;
 using std::string;
 
@@ -98,26 +101,3 @@ public:
     ~Orange() { cout << "Orange destructor\n"; }
 #endif
 };
-
-//------------------------------------------------------------------------------
-// - allocate space for and initialize static member vars outside the class
-// - for multi-compilation unit projects, put this declaration/initialization
-// either:
-//      - in a separate .cpp file (named Fruit_statics.cpp, e.g.), or
-//      - in your app code
-//------------------------------------------------------------------------------
-int Fruit::instanceCount = 0;
-
-//------------------------------------------------------------------------------
-// operator << overload
-//  - static avoids link errors when > 1 compilation units
-//------------------------------------------------------------------------------
-static ostream& operator<<(ostream& os, Fruit& f) {
-
-    // here static means the data values will persist across function calls 
-    static const string fruitNames[] = { "Fruit ", "Banana ", "Orange " };
-
-    os << "Calories for " << fruitNames[f.fruitID] << f.calories;
-
-    return os;
-}

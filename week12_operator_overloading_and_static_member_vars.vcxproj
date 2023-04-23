@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="source\Fruit_.cpp" />
     <ClCompile Include="source\fruit_vector.cpp" />
   </ItemGroup>
   <ItemGroup>
