@@ -19,7 +19,7 @@ int Fruit::s_instanceCount = 0;
 //------------------------------------------------------------------------------
 // friend operator << overload
 //------------------------------------------------------------------------------
-ostream& operator<<(ostream& os, Fruit& f) {
+ostream& operator<<(ostream& os, const Fruit& f) {
 
     // "local static" means a value will persist across function calls 
     static const string fruitNames[] = { "Fruit ", "Banana ", "Orange " };

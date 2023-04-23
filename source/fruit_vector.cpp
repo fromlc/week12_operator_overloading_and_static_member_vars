@@ -96,7 +96,12 @@ void displayFruits(vector<Fruit*>* pV) {
 		else if (fruitID == _FRUIT) {
 			cout << "Fruits have ";
 		}
+
 		cout << p->getColor() << '\n';
+
+		// getColor() returns a const reference to prevent mutating private color
+		//string test = p->getColor();
+		//&test = "blue";	// won't compile
 	}
 	cout << '\n';
 }

@@ -32,7 +32,7 @@ constexpr int ORANGE = 2;
 // Fruit
 //------------------------------------------------------------------------------
 class Fruit {
-    friend ostream& operator<<(ostream& os, Fruit& f);
+    friend ostream& operator<<(ostream& os, const Fruit& f);
 
 private:
     // use static member variable to count instances
@@ -76,6 +76,8 @@ public:
     // setter
     void setCalories(int _calories) { calories = _calories; }
 
+    // f1 + f2
+    // 
     // overload + operator to add calories of two Fruit instances
     int operator+(Fruit& rhs) {
         return this->calories + rhs.calories;
