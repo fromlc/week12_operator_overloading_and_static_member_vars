@@ -36,7 +36,7 @@ class Fruit {
 
 private:
     // use static member variable to count instances
-    static int instanceCount;
+    static int s_instanceCount;
 
     // each instance gets a unique ID
     int instanceID;
@@ -53,7 +53,7 @@ public:
     Fruit(int _fruitID, string _color) {
 
         // assign unique instance ID and count instances
-        instanceID = ++instanceCount;
+        instanceID = ++s_instanceCount;
 
         // identifies type used for instantiation
         fruitID = _fruitID;
@@ -71,7 +71,7 @@ public:
     const string& getColor() const { return color; }
 
     // access static member variable
-    static int getInstanceCount() { return instanceCount; }
+    static int getInstanceCount() { return s_instanceCount; }
 
     // setter
     void setCalories(int _calories) { calories = _calories; }

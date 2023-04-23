@@ -14,7 +14,7 @@ using std::ostream;
 //------------------------------------------------------------------------------
 // allocate space for and initialize static member vars outside the class
 //------------------------------------------------------------------------------
-int Fruit::instanceCount = 0;
+int Fruit::s_instanceCount = 0;
 
 //------------------------------------------------------------------------------
 // friend operator << overload
