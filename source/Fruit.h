@@ -76,18 +76,6 @@ public:
 };
 
 //------------------------------------------------------------------------------
-// Orange
-//------------------------------------------------------------------------------
-class Orange : public Fruit {
-public:
-    Orange() : Fruit::Fruit(ORANGE, "orange") { setCalories(60); }
-
-#ifdef LC_DEBUG
-    ~Orange() { cout << "Orange destructor\n"; }
-#endif
-};
-
-//------------------------------------------------------------------------------
 // Banana
 //------------------------------------------------------------------------------
 class Banana : public Fruit {
@@ -96,6 +84,18 @@ public:
 
 #ifdef LC_DEBUG
     ~Banana() { cout << "Banana destructor\n"; }
+#endif
+};
+
+//------------------------------------------------------------------------------
+// Orange
+//------------------------------------------------------------------------------
+class Orange : public Fruit {
+public:
+    Orange() : Fruit::Fruit(ORANGE, "orange") { setCalories(60); }
+
+#ifdef LC_DEBUG
+    ~Orange() { cout << "Orange destructor\n"; }
 #endif
 };
 
