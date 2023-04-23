@@ -65,11 +65,14 @@ public:
     Fruit() : Fruit(_FRUIT, "none") { }
 
     // getters
-    static int getInstanceCount() { return instanceCount; }
     int getInstanceID() const { return instanceID; }
     int getFruitID() const { return fruitID; }
     int getCalories() const { return calories; }
     const string& getColor() const { return color; }
+
+    // access static member variable
+    static int getInstanceCount() { return instanceCount; }
+
 
     // setter
     void setCalories(int _calories) { calories = _calories; }

@@ -67,7 +67,7 @@ vector<Fruit*>* getFruitVector() {
 	// we can store base class pointers too
 	pV->push_back(new Fruit);
 
-	// use static member variable to report instance count
+	// use static member function to report instance count
 	cout << "Created " << Fruit::getInstanceCount()
 		<< " Fruit instances\n\n";
 	
