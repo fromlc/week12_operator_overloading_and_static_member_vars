@@ -107,11 +107,20 @@ public:
 // Orange
 //------------------------------------------------------------------------------
 class Orange : public Fruit {
+private:
+    double juiceYield;
+
 public:
-    Orange() : Fruit::Fruit(ORANGE, "orange") { setCalories(60); }
+    Orange() : Fruit::Fruit(ORANGE, "orange") { 
+        setCalories(60);
+        juiceYield = 2.5;   // juice per fruit in ounces
+    }
+
+    double getJuiceYield() const { return juiceYield; }
 
 #ifdef LC_DEBUG
     ~Orange() { cout << "Orange destructor\n"; }
 #endif
 };
+
 

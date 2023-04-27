@@ -8,6 +8,7 @@
 //------------------------------------------------------------------------------
 #include "Fruit.h"
 
+#include <algorithm>	// std::sort()
 #include <iostream>
 #include <string>
 #include <vector>
@@ -23,6 +24,7 @@ using std::vector;
 // local function prototypes
 //------------------------------------------------------------------------------
 vector<Fruit*>* getFruitVector();
+void sortFruits(vector<Fruit*>*);
 void displayFruits(vector<Fruit*>*);
 void countCalories();
 void deleteFruits(vector<Fruit*>*&);
@@ -33,6 +35,8 @@ void deleteFruits(vector<Fruit*>*&);
 int main() {
 
 	vector<Fruit*>* pVFruits = getFruitVector();
+
+	sortFruits(pVFruits);
 
 	displayFruits(pVFruits);
 
@@ -75,6 +79,21 @@ vector<Fruit*>* getFruitVector() {
 }
 
 //------------------------------------------------------------------------------
+// called by std::sort()
+//------------------------------------------------------------------------------
+bool vSort(Fruit* pLhs, Fruit* pRhs) {
+	return pLhs->getFruitID() < pRhs->getFruitID();
+}
+
+//------------------------------------------------------------------------------
+// std::sort() vector by element fruitID
+//------------------------------------------------------------------------------
+void sortFruits(vector<Fruit*>* pV) {
+
+	std::sort(pV->begin(), pV->end(), vSort);
+}
+
+//------------------------------------------------------------------------------
 // display vector elements
 //------------------------------------------------------------------------------
 void displayFruits(vector<Fruit*>* pV) {
@@ -88,16 +107,27 @@ void displayFruits(vector<Fruit*>* pV) {
 		cout << "Instance ID " << p->getInstanceID() << ": ";
 
 		if (fruitID == ORANGE) {
-			cout << "Oranges are ";
+			// must typecast to display Orange's member variable values
+
+			// C++ best-practice way to typecast - static_cast is easy to search for
+			Orange* pOrange = static_cast<Orange*>(p);
+
+			// C way to typecast - it's hard to find C-style casts in source code!
+			// Orange* pOrange = (Orange*)p;
+
+			cout << "Oranges yield " << pOrange->getJuiceYield()
+				<< " ounces of juice.\n";
 		}
 		else if (fruitID == BANANA) {
-			cout << "Bananas are ";
+			// C way to typecast - it's hard to search source code for these
+			// Banana* pBanana = (Banana*)p;
+
+			// Use Fruit* p to display base class member variables
+			cout << "Bananas are " << p->getColor() << '\n';
 		}
 		else if (fruitID == _FRUIT) {
-			cout << "Fruits have ";
+			cout << "Fruits have " << p->getColor() << '\n';
 		}
-
-		cout << p->getColor() << '\n';
 
 		// getColor() returns a const reference to prevent mutating private color
 		//string test = p->getColor();
