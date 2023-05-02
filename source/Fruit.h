@@ -86,6 +86,46 @@ public:
         return this->calories + rhs.calories;
     }
 
+    //--------------------------------------------------------------------------
+    // overload < operator to order Fruit instances by derived class ID fruitID
+    // 
+    // Fruit f1, f2;
+    // in expression f1 < f2, f1 is "this" and f2 is "rhs"
+    //--------------------------------------------------------------------------
+    bool operator<(Fruit& rhs) {
+        return this->fruitID < rhs.fruitID;
+    }
+
+    //--------------------------------------------------------------------------
+    // overload <= operator to order Fruit instances by derived class ID fruitID
+    // 
+    // Fruit f1, f2;
+    // in expression f1 <= f2, f1 is "this" and f2 is "rhs"
+    //--------------------------------------------------------------------------
+    bool operator<=(Fruit& rhs) {
+        return this->fruitID <= rhs.fruitID;
+    }
+
+    //--------------------------------------------------------------------------
+    // overload > operator to order Fruit instances by derived class ID fruitID
+    // 
+    // Fruit f1, f2;
+    // in expression f1 > f2, f1 is "this" and f2 is "rhs"
+    //--------------------------------------------------------------------------
+    bool operator>(Fruit& rhs) {
+        return this->fruitID > rhs.fruitID;
+    }
+
+    //--------------------------------------------------------------------------
+    // overload >= operator to order Fruit instances by derived class ID fruitID
+    // 
+    // Fruit f1, f2;
+    // in expression f1 >= f2, f1 is "this" and f2 is "rhs"
+    //--------------------------------------------------------------------------
+    bool operator>=(Fruit& rhs) {
+        return this->fruitID >= rhs.fruitID;
+    }
+
 #ifdef LC_DEBUG
     ~Fruit() { cout << "Fruit destructor\n"; }
 #endif

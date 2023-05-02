@@ -8,6 +8,7 @@
 //------------------------------------------------------------------------------
 #include "Fruit.h"
 
+#include <algorithm>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -23,6 +24,7 @@ using std::vector;
 // local function prototypes
 //------------------------------------------------------------------------------
 vector<Fruit*>* getFruitVector();
+void sortFruits(vector<Fruit*>* pV, bool ascending = true);
 void displayFruits(vector<Fruit*>*);
 void countCalories();
 void deleteFruits(vector<Fruit*>*&);
@@ -32,19 +34,27 @@ void deleteFruits(vector<Fruit*>*&);
 //------------------------------------------------------------------------------
 int main() {
 
-	vector<Fruit*>* pVFruits = getFruitVector();
+    vector<Fruit*>* pVFruits = getFruitVector();
 
-	displayFruits(pVFruits);
+    // demo std::sort() with function pointer param=vSortDown
+    // works
+    sortFruits(pVFruits, false);
+    displayFruits(pVFruits);
 
-	// demo operator + overload
-	countCalories();
+    // demo std::sort() with Fruit class operator < overload
+    //#TODO doesn't work
+    sortFruits(pVFruits, true);
+    displayFruits(pVFruits);
 
-	deleteFruits(pVFruits);
+    // demo operator + overload
+    countCalories();
 
-	// very inefficient but convenient way to keep app window open
-	system("pause");
+    deleteFruits(pVFruits);
 
-	return 0;
+    // very inefficient but convenient way to keep app window open
+    system("pause");
+
+    return 0;
 }
 
 //------------------------------------------------------------------------------
@@ -54,24 +64,50 @@ int main() {
 //------------------------------------------------------------------------------
 vector<Fruit*>* getFruitVector() {
 
-	// tell C++ we'll store pointers to base class instances
-	vector<Fruit*>* pV = new vector<Fruit*>;
+    // tell C++ we'll store pointers to base class instances
+    vector<Fruit*>* pV = new vector<Fruit*>;
 
-	// store pointers to derived class instances instead
-	// there are different ways to do this...
-	Orange* pOrange = new Orange;
-	pV->push_back(pOrange);
-	pV->push_back(new Orange);
-	pV->push_back(new Banana);
+    // we can store base class pointers too
+    pV->push_back(new Fruit);
 
-	// we can store base class pointers too
-	pV->push_back(new Fruit);
+    // store pointers to derived class instances instead
+    // there are different ways to do this...
+    Orange* pOrange = new Orange;
+    pV->push_back(pOrange);
+    pV->push_back(new Orange);
+    pV->push_back(new Banana);
 
-	// use static member function to report instance count
-	cout << "Created " << Fruit::getInstanceCount()
-		<< " Fruit instances\n\n";
-	
-	return pV;
+    // we can store base class pointers too
+    pV->push_back(new Fruit);
+
+    // use static member function to report instance count
+    cout << "Created " << Fruit::getInstanceCount()
+        << " Fruit instances\n\n";
+
+    return pV;
+}
+
+//------------------------------------------------------------------------------
+// called by std::sort()
+//------------------------------------------------------------------------------
+static bool vSortDown(const Fruit* pLhs, const Fruit* pRhs) {
+    return pLhs->getFruitID() > pRhs->getFruitID();
+}
+
+//------------------------------------------------------------------------------
+// std::sort() vector by element fruitID
+//------------------------------------------------------------------------------
+void sortFruits(vector<Fruit*>* pV, bool ascending) {
+
+    if (ascending) {
+        cout << "sorting derived class ID in ascending order\n";
+        cout << "#TODO doesn't work! What does this sort instead?\n";
+        std::sort(pV->begin(), pV->end());
+    }
+    else {
+        cout << "sorting derived class ID in descending order\n";
+        std::sort(pV->begin(), pV->end(), vSortDown);
+    }
 }
 
 //------------------------------------------------------------------------------
@@ -79,31 +115,31 @@ vector<Fruit*>* getFruitVector() {
 //------------------------------------------------------------------------------
 void displayFruits(vector<Fruit*>* pV) {
 
-	// traverse vector of pointers with range-based for loop
-	for (auto p : *pV) {
+    // traverse vector of pointers with range-based for loop
+    for (auto p : *pV) {
 
-		// determine which type this instance was instantiated with
-		int fruitID = p->getFruitID();
+        // determine which type this instance was instantiated with
+        int fruitID = p->getFruitID();
 
-		cout << "Instance ID " << p->getInstanceID() << ": ";
+        cout << "Derived class ID " << p->getFruitID() << ": ";
 
-		if (fruitID == ORANGE) {
-			cout << "Oranges are ";
-		}
-		else if (fruitID == BANANA) {
-			cout << "Bananas are ";
-		}
-		else if (fruitID == _FRUIT) {
-			cout << "Fruits have ";
-		}
+        if (fruitID == ORANGE) {
+            cout << "Oranges are ";
+        }
+        else if (fruitID == BANANA) {
+            cout << "Bananas are ";
+        }
+        else if (fruitID == _FRUIT) {
+            cout << "Fruits have ";
+        }
 
-		cout << p->getColor() << '\n';
+        cout << p->getColor() << '\n';
 
-		// getColor() returns a const reference to prevent mutating private color
-		//string test = p->getColor();
-		//&test = "blue";	// won't compile
-	}
-	cout << '\n';
+        // getColor() returns a const reference to prevent mutating private color
+        //string test = p->getColor();
+        //&test = "blue";	// won't compile
+    }
+    cout << '\n';
 }
 
 //------------------------------------------------------------------------------
@@ -112,34 +148,34 @@ void displayFruits(vector<Fruit*>* pV) {
 //------------------------------------------------------------------------------
 void deleteFruits(vector<Fruit*>*& pV) {
 
-	// traverse vector of pointers with iterator this time
-	for (auto it = pV->begin(); it != pV->end(); ++it) {
-		delete (*it);
-	}
+    // traverse vector of pointers with iterator this time
+    for (auto it = pV->begin(); it != pV->end(); ++it) {
+        delete (*it);
+    }
 
-	delete pV;
-	pV = nullptr;
+    delete pV;
+    pV = nullptr;
 }
 
 //------------------------------------------------------------------------------
 // demo operator + overload for Fruit instances
 //------------------------------------------------------------------------------
 void countCalories() {
-	Banana b;
-	Orange o;
-	Fruit f;
+    Banana b;
+    Orange o;
+    Fruit f;
 
-	//cout << "Calories for Banana: " << b.getCalories() << '\n';
-	//cout << "Calories for Orange: " << o.getCalories() << '\n';
-	//cout << "Calories for Fruit: " << f.getCalories() << '\n';
+    //cout << "Calories for Banana: " << b.getCalories() << '\n';
+    //cout << "Calories for Orange: " << o.getCalories() << '\n';
+    //cout << "Calories for Fruit: " << f.getCalories() << '\n';
 
-	// replace above cout's with operator overload function for <<
-	cout << b << '\n';
-	cout << o << '\n';
-	cout << f << '\n';
+    // replace above cout's with operator overload function for <<
+    cout << b << '\n';
+    cout << o << '\n';
+    cout << f << '\n';
 
-	int totalCalories = b + o;
+    int totalCalories = b + o;
 
-	cout << "Total calories for Banana + Orange: "
-		<< totalCalories << "\n\n";
+    cout << "Total calories for Banana + Orange: "
+        << totalCalories << "\n\n";
 }
