@@ -92,6 +92,22 @@ public:
 };
 
 //------------------------------------------------------------------------------
+// FruitPtr : wrapper for std::sort() using operator<()
+//------------------------------------------------------------------------------
+class FruitPtr {
+public:
+    Fruit* pFruit;
+
+    // constructor
+    FruitPtr() : pFruit(nullptr) { };
+
+    // operator < overload
+    bool operator<(const FruitPtr other) const {
+        return this->pFruit->getCalories() < other.pFruit->getCalories();
+    }
+};
+
+//------------------------------------------------------------------------------
 // Banana
 //------------------------------------------------------------------------------
 class Banana : public Fruit {
