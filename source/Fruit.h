@@ -1,6 +1,7 @@
 //------------------------------------------------------------------------------
 // Fruit.h : declaration and definition file for
 //      - base class Fruit
+//      - wrapper class FruitPtr for std::sort using operator<
 //      - derived classes Orange, Banana
 //------------------------------------------------------------------------------
 #pragma once
@@ -98,12 +99,14 @@ class FruitPtr {
 public:
     Fruit* pFruit;
 
-    // constructor
+    // constructors
     FruitPtr() : pFruit(nullptr) { };
 
+    FruitPtr(Fruit* _pFruit) : pFruit(_pFruit) { };
+
     // operator < overload
-    bool operator<(const FruitPtr other) const {
-        return this->pFruit->getCalories() < other.pFruit->getCalories();
+    bool operator<(const FruitPtr* other) const {
+        return this->pFruit->getFruitID() < other->pFruit->getFruitID();
     }
 };
 
