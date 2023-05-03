@@ -23,18 +23,18 @@ using std::vector;
 //------------------------------------------------------------------------------
 // local function prototypes
 //------------------------------------------------------------------------------
-vector<FruitPtr*>* getFruitVector();
-void sortFruits(vector<FruitPtr*>*, bool ascending = true);
-void displayFruits(vector<FruitPtr*>*);
+vector<FruitPtr>* getFruitVector();
+void sortFruits(vector<FruitPtr>*, bool ascending = true);
+void displayFruits(vector<FruitPtr>*);
 void countCalories();
-void deleteFruits(vector<FruitPtr*>*&);
+void deleteFruits(vector<FruitPtr>*&);
 
 //------------------------------------------------------------------------------
 // entry point
 //------------------------------------------------------------------------------
 int main() {
 
-	vector<FruitPtr*>* pVFruits = getFruitVector();
+	vector<FruitPtr>* pVFruits = getFruitVector();
 
 	// demo std::sort() with FruitPtr operator < overload
 	sortFruits(pVFruits, true);
@@ -60,20 +60,23 @@ int main() {
 // - store instance pointers in new vector<Fruit>
 // - return pointer to new vector<Fruit>
 //------------------------------------------------------------------------------
-vector<FruitPtr*>* getFruitVector() {
+vector<FruitPtr>* getFruitVector() {
 
 	// tell C++ we'll store pointers to base class instances
-	vector<FruitPtr*>* pV = new vector<FruitPtr*>;
+	vector<FruitPtr>* pV = new vector<FruitPtr>;
+
+	// we can store base class pointers too
+	pV->push_back(FruitPtr(new Fruit));
 
 	// store pointers to derived class instances instead
 	// there are different ways to do this...
 	Orange* pOrange = new Orange;
-	pV->push_back(new FruitPtr(pOrange));
-	pV->push_back(new FruitPtr(new Orange));
-	pV->push_back(new FruitPtr(new Banana));
+	pV->push_back(FruitPtr(pOrange));
+	pV->push_back(FruitPtr(new Orange));
+	pV->push_back(FruitPtr(new Banana));
 
 	// we can store base class pointers too
-	pV->push_back(new FruitPtr(new Fruit));
+	pV->push_back(FruitPtr(new Fruit));
 
 	// use static member function to report instance count
 	cout << "Created " << Fruit::getInstanceCount()
@@ -85,14 +88,14 @@ vector<FruitPtr*>* getFruitVector() {
 //------------------------------------------------------------------------------
 // called by std::sort()
 //------------------------------------------------------------------------------
-bool vSortDown(FruitPtr* pLhs, FruitPtr* pRhs) {
-	return pRhs->pFruit->getFruitID() < pLhs->pFruit->getFruitID();
+bool vSortDown(FruitPtr& lhs, FruitPtr& rhs) {
+	return rhs.pFruit->getFruitID() < lhs.pFruit->getFruitID();
 }
 
 //------------------------------------------------------------------------------
 // std::sort() vector by element fruitID
 //------------------------------------------------------------------------------
-void sortFruits(vector<FruitPtr*>* pV, bool ascending) {
+void sortFruits(vector<FruitPtr>* pV, bool ascending) {
 
 	if (ascending) {
 		cout << "sorting derived class ID in ascending order\n";
@@ -107,21 +110,21 @@ void sortFruits(vector<FruitPtr*>* pV, bool ascending) {
 //------------------------------------------------------------------------------
 // display vector elements
 //------------------------------------------------------------------------------
-void displayFruits(vector<FruitPtr*>* pV) {
+void displayFruits(vector<FruitPtr>* pV) {
 
 	// traverse vector of pointers with range-based for loop
-	for (auto p : *pV) {
+	for (FruitPtr& f : *pV) {
 
 		// determine which type this instance was instantiated with
-		int fruitID = p->pFruit->getFruitID();
+		int fruitID = f.pFruit->getFruitID();
 
-		cout << "Derived class ID " << p->pFruit->getFruitID() << ": ";
+		cout << "Derived class ID " << f.pFruit->getFruitID() << ": ";
 
 		if (fruitID == ORANGE) {
 			// must typecast to display Orange's member variable values
 
 			// C++ best-practice way to typecast - static_cast is easy to search for
-			Orange* pOrange = static_cast<Orange*>(p->pFruit);
+			Orange* pOrange = static_cast<Orange*>(f.pFruit);
 
 			// C way to typecast - it's hard to find C-style casts in source code!
 			// Orange* pOrange = (Orange*)p;
@@ -134,10 +137,10 @@ void displayFruits(vector<FruitPtr*>* pV) {
 			// Banana* pBanana = (Banana*)p;
 
 			// Use Fruit* p to display base class member variables
-			cout << "Bananas are " << p->pFruit->getColor() << '\n';
+			cout << "Bananas are " << f.pFruit->getColor() << '\n';
 		}
 		else if (fruitID == _FRUIT) {
-			cout << "Fruits have " << p->pFruit->getColor() << '\n';
+			cout << "Fruits have " << f.pFruit->getColor() << '\n';
 		}
 
 		// getColor() returns a const reference to prevent mutating private color
@@ -151,12 +154,11 @@ void displayFruits(vector<FruitPtr*>* pV) {
 // - delete vector elements
 // - delete vector and set passed reference pointer to nullptr
 //------------------------------------------------------------------------------
-void deleteFruits(vector<FruitPtr*>*& pV) {
+void deleteFruits(vector<FruitPtr>*& pV) {
 
 	// traverse vector of pointers with iterator this time
 	for (auto it = pV->begin(); it != pV->end(); ++it) {
-		delete (*it)->pFruit;
-		delete (*it);
+		delete it->pFruit;
 	}
 
 	delete pV;

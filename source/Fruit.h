@@ -9,7 +9,7 @@
 #include <iostream>
 
 // comment this #define to disable debug messages
-//#define LC_DEBUG
+#define LC_DEBUG
 
 //------------------------------------------------------------------------------
 // using symbols
@@ -105,8 +105,18 @@ public:
     FruitPtr(Fruit* _pFruit) : pFruit(_pFruit) { };
 
     // operator < overload
-    bool operator<(const FruitPtr* other) const {
-        return this->pFruit->getFruitID() < other->pFruit->getFruitID();
+    bool operator<(const FruitPtr& other) const {
+#ifdef LC_DEBUG
+        cout << "FruitPtr operator< overload\n";
+#endif
+        return this->pFruit->getFruitID() < other.pFruit->getFruitID();
+    }
+    // operator > overload
+    bool operator>(const FruitPtr& other) const {
+#ifdef LC_DEBUG
+        cout << "FruitPtr operator> overload\n";
+#endif
+        return this->pFruit->getFruitID() > other.pFruit->getFruitID();
     }
 };
 
